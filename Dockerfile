@@ -20,16 +20,16 @@ RUN rm /etc/nginx/sites-enabled/default
 ADD nginx.conf /etc/nginx/sites-enabled/webapp.conf
 
 # Install bundle of gems
-WORKDIR /tmp
-ADD Gemfile /tmp/
-ADD Gemfile.lock /tmp/
-RUN bundle install
+WORKDIR /app
+ADD Gemfile /app/
+ADD Gemfile.lock /app/
+RUN bundle install --jobs 8
 
 # Add the app
-ADD . /opt/app/webapp
-RUN chown -R app:app /opt/app/webapp
+ADD . /app
+RUN chown -R app:app /app
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD ["/usr/local/bin/foreman","start","-d","/opt/app/webapp"]
+CMD ["/usr/local/bin/foreman","start","-d","/app"]
