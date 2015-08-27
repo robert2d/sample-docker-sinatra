@@ -1,0 +1,9 @@
+web:
+  build: .
+  command: bundle exec thin -R config.ru -a 0.0.0.0 -p 8080 start
+  environment:
+    - LOG_LEVEL=INFO
+  volumes:
+    - .:/app
+  ports:
+    - "8080:8080"
